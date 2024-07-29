@@ -27,7 +27,7 @@ public class ClientGUI extends JFrame{
 
         ipAdr = new JTextField("192.168.1.1", 12);
         portNum = new JTextField("8080", 5);
-        login = new JTextField("Логин", 10);
+        login = new JTextField(10);
         pass = new JPasswordField("Пароль", 10);
         pass.setEchoChar('*');
         btnConnect = new JButton("Connect");
@@ -41,21 +41,32 @@ public class ClientGUI extends JFrame{
         panBottom.add(btnSend);
 
         //верхняя панель авторизации
+        JPanel panelAuth4 = new JPanel(new GridLayout(1,1));
+        panelAuth4.add(new JLabel("Сервер:                               Порт:"));
         JPanel panelAuth1 = new JPanel(new GridLayout(1, 3));
         panelAuth1.add(ipAdr);
         panelAuth1.add(portNum);
+        JPanel panelAuth3 = new JPanel(new GridLayout(1,1));
+        panelAuth3.add(new JLabel("Логин:                   Пароль:"));
         JPanel panelAuth2 = new JPanel(new GridLayout(1, 3));
         panelAuth2.add(login);
         panelAuth2.add(pass);
         panelAuth2.add(btnConnect);
-        JPanel panelAuth = new JPanel(new GridLayout(2, 1));
+        JPanel panelAuth = new JPanel(new GridLayout(4, 1));
+        panelAuth.add(panelAuth4);
         panelAuth.add(panelAuth1);
+        panelAuth.add(panelAuth3);
         panelAuth.add(panelAuth2);
 
         //соединение с сервером
         btnConnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (login.getText().isEmpty()) {
+                    chat.append("Введите логин!\n");
+                    return;
+                }
+
                 chat.append("Connecting to server...\n");
                 if (!serverGUI.isIsServerWorking()) {
                     chat.append("Server is down\n");
