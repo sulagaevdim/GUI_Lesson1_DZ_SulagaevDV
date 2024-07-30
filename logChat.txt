@@ -3,3 +3,7 @@ dd joined to server
 ee joined to server
 ee: privet!
 dd: привет
+наташа joined to server
+Дмитрий joined to server
+Дмитрий: привет наташа
+наташа: привет

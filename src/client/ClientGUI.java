@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame{
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setBounds(200, 200, WIDTH, HEIGHT);
-        setTitle("Chat Server");
+        setTitle("Client");
         setResizable(false);
 
         ipAdr = new JTextField("192.168.1.1", 12);
