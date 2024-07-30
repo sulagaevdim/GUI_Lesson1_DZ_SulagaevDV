@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,9 +17,13 @@ public class ServerGUI extends JFrame {
     private boolean isServerWorking = false;
 
     JButton btnStart, btnStop;
+
     JTextArea chat = new JTextArea();
 
+    List<ClientGUI> clientGUIList;
+
     public ServerGUI() {
+        clientGUIList = new ArrayList<>();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
@@ -32,7 +37,10 @@ public class ServerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 chat.append("Chat stopped\n");
-                writeToFile();
+                for (int i = 0; i < getClientGUIList().size(); i++) {
+                    getClientGUIList().get(i).chat.append("Server disconnected\n");
+                }
+                //writeToFile();
                 isServerWorking = false;
             }
         });
@@ -41,7 +49,10 @@ public class ServerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 chat.append("Chat started...\n");
-                writeToFile();
+                for (int i = 0; i < getClientGUIList().size(); i++) {
+                    getClientGUIList().get(i).chat.append("Connection resumed\n");
+                }
+                //writeToFile();
                 isServerWorking = true;
             }
         });
@@ -55,12 +66,26 @@ public class ServerGUI extends JFrame {
         setVisible(true);
     }
 
+    public void connectUser(ClientGUI clientGUI) {
+        clientGUIList.add(clientGUI);
+    }
+
+    public List<ClientGUI> getClientGUIList() {
+        return clientGUIList;
+    }
+
+    public void disconnectUser(ClientGUI clientGUI){
+        clientGUIList.remove(clientGUI);
+    }
     public boolean isIsServerWorking() {
         return isServerWorking;
     }
 
     public void connectedToChat(String login) {
         chat.append(login + " joined to server\n");
+        for (int i = 0; i < getClientGUIList().size(); i++) {
+            this.getClientGUIList().get(i).chat.append(login + " joined to server\n");
+        }
         writeToFile();
     }
 

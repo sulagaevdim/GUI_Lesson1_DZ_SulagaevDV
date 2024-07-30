@@ -6,6 +6,7 @@ public class Main {
 
         ServerGUI serverGUI = new ServerGUI();
         new ClientGUI(serverGUI);
+        new ClientGUI(serverGUI);
 
     }
 }

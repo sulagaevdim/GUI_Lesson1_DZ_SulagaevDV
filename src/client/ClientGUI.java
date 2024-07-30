@@ -15,7 +15,7 @@ public class ClientGUI extends JFrame{
     JButton btnSend, btnConnect;
     JTextField ipAdr, portNum, login, sendMessage;
     JPasswordField pass;
-    JTextArea chat = new JTextArea();
+    public JTextArea chat = new JTextArea();
 
     public ClientGUI(ServerGUI serverGUI) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,6 +74,7 @@ public class ClientGUI extends JFrame{
                 }
                 //chat.setText("");
                 connectToServer = true;
+                connectToServer(serverGUI);
                 chat.append("Connect to server successfully\n");
                 for (int i = 0; i < serverGUI.downloadHistory().size(); i++) {
                     chat.append(serverGUI.downloadHistory().get(i));
@@ -115,8 +116,12 @@ public class ClientGUI extends JFrame{
         setVisible(true);
     }
 
+    public void connectToServer(ServerGUI serverGUI){
+        serverGUI.connectUser(this);
+    }
     public void sendingMessage(ServerGUI serverGUI, JPanel panBottom, JPanel panelAuth) {
         if (!serverGUI.isIsServerWorking()) {
+            serverGUI.disconnectUser(this);
             chat.append("Server disconnected\n");
             panBottom.setVisible(false);
             panelAuth.setVisible(true);
@@ -124,7 +129,10 @@ public class ClientGUI extends JFrame{
         }
         if(sendMessage.getText().isEmpty()) return;
         serverGUI.sendMessage(login.getText(), sendMessage.getText());
-        chat.append(sendMessage.getText() + "\n");
+        for (int i = 0; i < serverGUI.getClientGUIList().size(); i++) {
+            serverGUI.getClientGUIList().get(i).chat.append(login.getText() + ": " + sendMessage.getText() + "\n");
+        }
+        //chat.append(login.getText() + ": " + sendMessage.getText() + "\n");
         sendMessage.setText("");
     }
 }
